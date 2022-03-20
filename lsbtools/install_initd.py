@@ -168,7 +168,7 @@ while nomoves == 0:
     while indexsub < len(sysinit[curindex][hindex["required-start"]]):
       tempindex = lsbtools.find_index(sysinit, sysinit[curindex][hindex["required-start"]][indexsub])
       if tempindex == 1000:
-        print("Error! Unable to locate Requried-Start dependency", sysinit[curindex][hindex["required-start"]][indexsub], "for script:", slist[index], file=sys.stderr)
+        print("Error! Unable to locate Required-Start dependency", sysinit[curindex][hindex["required-start"]][indexsub], "for script:", slist[index], file=sys.stderr)
         sys.exit(2)
       if tempindex > newindex:
         newindex = tempindex
