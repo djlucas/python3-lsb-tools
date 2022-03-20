@@ -198,8 +198,8 @@ while nomoves == 0:
   if moves == 0:
     nomoves = 1
 
-# Reorder start lists (only for RLs 1-5) exactly like above
-for runlevel in {1,2,3,4,5}:
+# Reorder start lists exactly like above
+for runlevel in {0,1,2,3,4,5,6}:
   maxiters = ( len(startlist[str(runlevel)]) * len(startlist[str(runlevel)]) )
   loop = 0
   iters = 0
