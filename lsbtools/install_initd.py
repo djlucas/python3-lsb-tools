@@ -168,7 +168,7 @@ while nomoves == 0:
     while indexsub < len(sysinit[curindex][hindex["required-start"]]):
       tempindex = lsbtools.find_index(sysinit, sysinit[curindex][hindex["required-start"]][indexsub])
       if tempindex == 1000:
-        print("Error! Unable to locate Requried-Start dependency", sysinit[curindex][hindex["required-start"]][indexsub], "for script:", slist[index], file=sys.stderr)
+        print("Error! Unable to locate Required-Start dependency", sysinit[curindex][hindex["required-start"]][indexsub], "for script:", slist[index], file=sys.stderr)
         sys.exit(2)
       if tempindex > newindex:
         newindex = tempindex
@@ -198,8 +198,8 @@ while nomoves == 0:
   if moves == 0:
     nomoves = 1
 
-# Reorder start lists (only for RLs 1-5) exactly like above
-for runlevel in {1,2,3,4,5}:
+# Reorder start lists exactly like above
+for runlevel in {0,1,2,3,4,5,6}:
   maxiters = ( len(startlist[str(runlevel)]) * len(startlist[str(runlevel)]) )
   loop = 0
   iters = 0
