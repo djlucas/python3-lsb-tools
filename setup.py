@@ -66,7 +66,10 @@ class OSInstall(install):
         dtli = dli + '.temp'
         # setuptools depends on lsb_release
         # hardcode the interpreter for Python upgrades
-        myshebang = "#!" + os.path.dirname(sys.executable) + "/" + os.readlink(sys.executable)
+        if os.path.islink(sys.executable):
+            myshebang = "#!" + os.path.dirname(sys.executable) + "/" + os.readlink(sys.executable)
+        else:
+            myshebang = "#!" + sys.executable
         with open(ipy, 'r') as original: data = original.read()
         with open(ipy, 'w') as modified: modified.write(myshebang + "\n" + data)
         with open(iid, 'r') as original: data = original.read()
