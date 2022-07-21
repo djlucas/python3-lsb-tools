@@ -104,7 +104,7 @@ setup(
     license='MIT',
     author='DJ Lucas',
     author_email='dj@linuxfromscratch.org',
-    url='https://github.com/djlucas/LSB-Tools/',
+    url='https://github.com/lfs-book/LSB-Tools/',
     description='A distribution agnostic set of LSB scripts.',
     long_description=open('README').read(),
     python_requires='>3.7',
