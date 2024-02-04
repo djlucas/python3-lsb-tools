@@ -4,8 +4,9 @@ import sys
 if sys.version_info < (3, 7):
   sys.exit("Python %s.%s or later is required.\n" %(3, 7))
 
-import argparse, glob, itertools, lsbtools, os, re
+import argparse, glob, itertools, os, re
 from io import StringIO
+from . import lsbtools
 
 # Dictionary to map facilities to script names
 facilities = {
