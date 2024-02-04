@@ -1,4 +1,7 @@
+ifeq ($(V),)
 Q = @
+endif
+
 PYTHON ?= python3
 PY_COMPILE = $(Q)$(PYTHON) -m py_compile
 
