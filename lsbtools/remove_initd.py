@@ -4,7 +4,8 @@ import sys
 if sys.version_info < (3, 7):
   sys.exit("Python %s.%s or later is required.\n" %(3, 7))
 
-import argparse, glob, itertools, lsbtools, os, re
+import argparse, glob, itertools, os, re
+from . import lsbtools
 from io import StringIO
 
 

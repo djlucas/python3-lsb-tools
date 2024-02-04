@@ -1,13 +1,8 @@
-To install as a system utility, as the root user, simply run: 
-# python3 setup.py install --optimize=1
+To build the package (actually, only byte-compiling the Python code), run:
+$ make
 
-To create a packaged directory, run as your packaging user with the '--root'
-argument.
+To install as a system utility, as the root user, run:
+# make install
 
-As this is a noarch system utiltity, the setup.py install arguments --home,
---install-base, --install-data, --install-purelib, --install-platlib,
---install-scripts, and --prefix are explicitly disallowed.
-
-While a development install is possible, symlinks are not created in the
-OS paths.
-
+To create a packaged directory, run as your packaging user:
+$ DESTDIR=/path/to/package make install

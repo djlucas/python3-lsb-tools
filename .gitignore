@@ -1,0 +1,4 @@
+*.pyc
+*.ent
+python.shebang
+s-python-shebang
