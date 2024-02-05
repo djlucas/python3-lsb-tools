@@ -32,16 +32,19 @@ install: all
 	cp -av --no-preserve=ownership lsbtools \
 	   -T  $(DESTDIR)/$(PYLIB_DIR)/lsbtools
 	install -D -vm755 lsb_release.ent $(DESTDIR)/usr/bin/lsb_release
-	install -vdm 755 $(DESTDIR)/usr/sbin
-	for i in install_initd remove_initd; do     \
-	  install -D -vm755 $$i.ent $(DESTDIR)/usr/lib/lsb/$$i;\
-	  rm -fv $(DESTDIR)/usr/sbin/$$i;                      \
-	  ln -sv ../lib/lsb/$$i $(DESTDIR)/usr/sbin;           \
-	done
 	mkdir -pv $(DESTDIR)/usr/share/man/man1
 	install -vm644 man/lsb_release.1 $(DESTDIR)/usr/share/man/man1
-	mkdir -pv $(DESTDIR)/usr/share/man/man8
-	install -vm644 man/*.8 $(DESTDIR)/usr/share/man/man8
+	if [[ "$$(basename $$(realpath $(DESTDIR)/sbin/init))"             \
+	      != "systemd" ]]; then                                        \
+	  install -vdm 755 $(DESTDIR)/usr/sbin;                            \
+	  for i in install_initd remove_initd; do                          \
+	    install -D -vm755 $$i.ent $(DESTDIR)/usr/lib/lsb/$$i;          \
+	    rm -fv $(DESTDIR)/usr/sbin/$$i;                                \
+	    ln -sv ../lib/lsb/$$i $(DESTDIR)/usr/sbin;                     \
+	  done;                                                            \
+	  mkdir -pv $(DESTDIR)/usr/share/man/man8;                         \
+	  install -vm644 man/*.8 $(DESTDIR)/usr/share/man/man8;            \
+	fi
 
 $(LSBTOOLS_PYC): lsbtools/lsbtools.py
 	@echo '[PY_COMPILE] ' $@
