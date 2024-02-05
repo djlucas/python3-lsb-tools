@@ -11,15 +11,13 @@ pysrc_to_pyc = \
 
 LSBTOOLS_PYC = $(call pysrc_to_pyc,lsbtools.py)
 INSTALL_INITD_PYC = $(call pysrc_to_pyc,install_initd.py)
-LSBINSTALL_PYC = $(call pysrc_to_pyc,lsbinstall.py)
 LSB_RELEASE_PYC = $(call pysrc_to_pyc,lsb_release.py)
 REMOVE_INITD_PYC = $(call pysrc_to_pyc,remove_initd.py)
 
 ALL_PYC = $(LSBTOOLS_PYC) $(INSTALL_INITD_PYC) $(LSBINSTALL_PYC) \
           $(LSB_RELEASE_PYC) $(REMOVE_INITD_PYC)
 
-ENTRY_POINT = install_initd.ent lsbinstall.ent lsb_release.ent \
-              remove_initd.ent
+ENTRY_POINT = install_initd.ent lsb_release.ent remove_initd.ent
 
 PYLIB_DIR = $(shell $(PYTHON) -c "import sysconfig; \
                                   print(sysconfig.get_path('purelib'))")
@@ -50,10 +48,6 @@ $(LSBTOOLS_PYC): lsbtools/lsbtools.py
 	$(PY_COMPILE) $<
 
 $(INSTALL_INITD_PYC): lsbtools/install_initd.py
-	@echo '[PY_COMPILE] ' $@
-	$(PY_COMPILE) $<
-
-$(LSBINSTALL_PYC): lsbtools/lsbinstall.py
 	@echo '[PY_COMPILE] ' $@
 	$(PY_COMPILE) $<
 
