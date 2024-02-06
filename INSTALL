@@ -6,3 +6,16 @@ To install as a system utility, as the root user, run:
 
 To create a packaged directory, run as your packaging user:
 $ DESTDIR=/path/to/package make install
+
+Note that DESTDIR is intended to create a package for the current system,
+instead of directly installing into a different OS tree.  So the install
+process probes the init system with /sbin/init, not $(DESTDIR)/sbin/init.
+If you are installing into a different OS tree or creating a package for
+a different OS tree, or your init system is not installed yet, you need
+to specify INIT=sysv or INIT=systemd to indicate the type of the init
+system of the target OS tree.  For example:
+$ DESTDIR=/mnt/lfs-systemd INIT=systemd make install
+
+Or (if systemd will be installed, but it is not installed yet in the OS
+tree currently chroot'ed into):
+(chroot)# INIT=systemd make install

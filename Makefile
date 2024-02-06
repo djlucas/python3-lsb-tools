@@ -22,6 +22,8 @@ ENTRY_POINT = install_initd.ent lsb_release.ent remove_initd.ent
 PYLIB_DIR = $(shell $(PYTHON) -c "import sysconfig; \
                                   print(sysconfig.get_path('purelib'))")
 
+INIT ?= $(shell basename $(realpath /sbin/init))
+
 .PHONY: all clean install
 all: $(ALL_PYC) $(ENTRY_POINT)
 
@@ -34,8 +36,7 @@ install: all
 	install -D -vm755 lsb_release.ent $(DESTDIR)/usr/bin/lsb_release
 	mkdir -pv $(DESTDIR)/usr/share/man/man1
 	install -vm644 man/lsb_release.1 $(DESTDIR)/usr/share/man/man1
-	if [[ "$$(basename $$(realpath $(DESTDIR)/sbin/init))"             \
-	      != "systemd" ]]; then                                        \
+	if [[ "$(INIT)" != "systemd" ]]; then                              \
 	  install -vdm 755 $(DESTDIR)/usr/sbin;                            \
 	  for i in install_initd remove_initd; do                          \
 	    install -D -vm755 $$i.ent $(DESTDIR)/usr/lib/lsb/$$i;          \
