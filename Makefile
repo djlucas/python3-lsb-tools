@@ -11,18 +11,18 @@ pysrc_to_pyc = \
 
 LSBTOOLS_PYC = $(call pysrc_to_pyc,lsbtools.py)
 INSTALL_INITD_PYC = $(call pysrc_to_pyc,install_initd.py)
-LSBINSTALL_PYC = $(call pysrc_to_pyc,lsbinstall.py)
 LSB_RELEASE_PYC = $(call pysrc_to_pyc,lsb_release.py)
 REMOVE_INITD_PYC = $(call pysrc_to_pyc,remove_initd.py)
 
 ALL_PYC = $(LSBTOOLS_PYC) $(INSTALL_INITD_PYC) $(LSBINSTALL_PYC) \
           $(LSB_RELEASE_PYC) $(REMOVE_INITD_PYC)
 
-ENTRY_POINT = install_initd.ent lsbinstall.ent lsb_release.ent \
-              remove_initd.ent
+ENTRY_POINT = install_initd.ent lsb_release.ent remove_initd.ent
 
 PYLIB_DIR = $(shell $(PYTHON) -c "import sysconfig; \
                                   print(sysconfig.get_path('purelib'))")
+
+INIT ?= $(shell basename $(realpath /sbin/init))
 
 .PHONY: all clean install
 all: $(ALL_PYC) $(ENTRY_POINT)
@@ -34,26 +34,24 @@ install: all
 	cp -av --no-preserve=ownership lsbtools \
 	   -T  $(DESTDIR)/$(PYLIB_DIR)/lsbtools
 	install -D -vm755 lsb_release.ent $(DESTDIR)/usr/bin/lsb_release
-	install -vdm 755 $(DESTDIR)/usr/sbin
-	for i in install_initd remove_initd; do     \
-	  install -D -vm755 $$i.ent $(DESTDIR)/usr/lib/lsb/$$i;\
-	  rm -fv $(DESTDIR)/usr/sbin/$$i;                      \
-	  ln -sv ../lib/lsb/$$i $(DESTDIR)/usr/sbin;           \
-	done
 	mkdir -pv $(DESTDIR)/usr/share/man/man1
 	install -vm644 man/lsb_release.1 $(DESTDIR)/usr/share/man/man1
-	mkdir -pv $(DESTDIR)/usr/share/man/man8
-	install -vm644 man/*.8 $(DESTDIR)/usr/share/man/man8
+	if [[ "$(INIT)" != "systemd" ]]; then                              \
+	  install -vdm 755 $(DESTDIR)/usr/sbin;                            \
+	  for i in install_initd remove_initd; do                          \
+	    install -D -vm755 $$i.ent $(DESTDIR)/usr/lib/lsb/$$i;          \
+	    rm -fv $(DESTDIR)/usr/sbin/$$i;                                \
+	    ln -sv ../lib/lsb/$$i $(DESTDIR)/usr/sbin;                     \
+	  done;                                                            \
+	  mkdir -pv $(DESTDIR)/usr/share/man/man8;                         \
+	  install -vm644 man/*.8 $(DESTDIR)/usr/share/man/man8;            \
+	fi
 
 $(LSBTOOLS_PYC): lsbtools/lsbtools.py
 	@echo '[PY_COMPILE] ' $@
 	$(PY_COMPILE) $<
 
 $(INSTALL_INITD_PYC): lsbtools/install_initd.py
-	@echo '[PY_COMPILE] ' $@
-	$(PY_COMPILE) $<
-
-$(LSBINSTALL_PYC): lsbtools/lsbinstall.py
 	@echo '[PY_COMPILE] ' $@
 	$(PY_COMPILE) $<
 
